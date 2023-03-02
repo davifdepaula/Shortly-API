@@ -1,6 +1,6 @@
 import db from "../config/connection.js"
 import bcrypt from 'bcrypt'
-import nanoid from "nanoid"
+import { nanoid } from "nanoid"
 import {v4 as uuidV4} from 'uuid'
 
 const signUp = async(req, res) => {
