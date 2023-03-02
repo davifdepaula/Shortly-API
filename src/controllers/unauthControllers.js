@@ -5,7 +5,12 @@ const getUrlById = async(req, res) => {
     const {id} = res.locals
     const url = await db.query(`SELECT * FROM urls WHERE
     id = $1`, [id])
-    return res.status(200).send(url.rows[0])
+    return res.status(200).send(
+      {
+        id: url.rows[0].id, 
+        shortUrl: url.rows[0].shortUrl,
+        url: url.rows[0].url
+     })
   } catch (error) {
     return res.status(500).send(error)
   }
