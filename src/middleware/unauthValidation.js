@@ -8,7 +8,7 @@ const validateUrlId = async(req, res, next) => {
     if (checkId.rowCount === 0) return res.sendStatus(404)
     res.locals.id = checkId.rows[0].id
     res.locals.shortUrl = checkId.rows[0].shortUrl
-    if (checkId.rows[0].url.value.url) res.locals.url = checkId.rows[0].value.url
+    if (checkId.rows[0].url.value) res.locals.url = checkId.rows[0].value.url
     else res.locals.url = checkId.rows[0].url
     next()
   } catch (error) {
