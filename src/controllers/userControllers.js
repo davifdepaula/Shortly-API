@@ -57,7 +57,7 @@ const urlShorten = async(req, res) => {
     const {session, url} = res.locals
     const shortUrl = nanoid(10)
     await db.query(`INSERT INTO urls 
-      ("userId", url, "shortUrl") values ($1, $2, $3)`, [session.id, url, shortUrl])    
+      ("userId", url, "shortUrl") values ($1, $2, $3)`, [session.id, url.value.url, shortUrl])    
     const urlData = await db.query(`SELECT * FROM urls 
       WHERE "shortUrl" = $1`, [shortUrl])
     const id = urlData.rows[0].id
