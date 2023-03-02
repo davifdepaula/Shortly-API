@@ -59,7 +59,7 @@ const checkUserId = async(req, res, next) => {
     const checkIdUrl = await db.query(`SELECT * FROM urls WHERE
     id = $1`, [req.params.id])
     if(checkIdUrl.rowCount === 0) return res.sendStatus(404)
-    if(userId !== checkIdUrl.rows[0].userId) return res.sendStatus(404)
+    if(userId !== checkIdUrl.rows[0].userId) return res.sendStatus(401)
     res.locals.urlId = req.params.id
     next()
   } catch (error) {
