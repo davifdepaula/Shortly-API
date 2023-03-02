@@ -1,4 +1,3 @@
-import joi from 'joi'
 import db from '../config/connection.js'
 import bcrypt from 'bcrypt'
 import { signUpSchema, signInSchema, urlSchema } from '../model/authUserModel.js'
