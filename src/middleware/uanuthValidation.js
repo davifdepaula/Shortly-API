@@ -7,6 +7,7 @@ const validateUrlId = async(req, res, next) => {
     id = $1`, [id])
     if (checkId.rowCount === 0) return res.sendStatus(404)
     res.locals.id = id
+    next()
   } catch (error) {
     return res.status(500).send(error)
   }
