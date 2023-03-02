@@ -12,8 +12,13 @@ const signInSchema = joi.object({
   password: joi.string().required()
 })
 
+const urlSchema = joi.object({
+  url: joi.string().required()
+})
+
 
 export {
   signUpSchema,
-  signInSchema
+  signInSchema,
+  urlSchema
 }

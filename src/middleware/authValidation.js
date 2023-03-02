@@ -1,7 +1,7 @@
 import joi from 'joi'
 import db from '../config/connection.js'
 import bcrypt from 'bcrypt'
-import { signUpSchema, signInSchema } from '../model/authModel.js'
+import { signUpSchema, signInSchema, urlSchema } from '../model/authUserModel.js'
 
 const signUpValidate = async(req, res, next) => {
   const signUpValidation = signUpSchema.validate(req.body)
@@ -28,7 +28,36 @@ res.locals.userId = checkUser.rows[0].id
 next()
 } 
 
+const tokenValidation = async(req, res, next) => {
+  const {authorization} = req.headers
+  const token = authorization?.replace('Bearer ', '')
+  if(!token) return res.sendStatus(401)
+  try{
+      const session = await db.query(`SELECT * FROM sessions WHERE 
+      token = $1`, [token])
+      if(session.rowCount === 0) return res.sendStatus(401)
+      res.locals.session = session.rows[0]
+      next()
+  }catch{
+    return res.send(error).status(500)
+  }
+}
+
+const urlValidate = async(req, res, next) => {
+  try {
+    const url = urlSchema.validate(req.body)
+    if(url.error) return res.status(422).send(`${url.error.message}`)
+    res.locals.url = url
+    next()    
+  } catch (error) {
+    return res.send(error).status(500)
+  }
+}
+
+
 export {
   signUpValidate,
-  signInValidate
+  signInValidate,
+  tokenValidation,
+  urlValidate
 }
