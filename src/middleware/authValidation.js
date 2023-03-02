@@ -53,10 +53,25 @@ const urlValidate = async(req, res, next) => {
   }
 }
 
+const checkUserId = async(req, res, next) => {
+  try {
+    const {userId} = res.locals.session
+    const checkIdUrl = await db.query(`SELECT * FROM urls WHERE
+    id = $1`, [req.params.id])
+    if(checkIdUrl.rowCount === 0) return res.sendStatus(404)
+    if(userId !== checkIdUrl.rows[0].userId) return res.sendStatus(404)
+    res.locals.urlId = req.params.id
+    next()
+  } catch (error) {
+    return res.send(error).status(500)
+  }
+}
+
 
 export {
   signUpValidate,
   signInValidate,
   tokenValidation,
-  urlValidate
+  urlValidate,
+  checkUserId
 }

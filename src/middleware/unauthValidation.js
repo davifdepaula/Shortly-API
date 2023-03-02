@@ -7,8 +7,6 @@ const validateUrlId = async(req, res, next) => {
     const checkId = await db.query(`SELECT * FROM urls WHERE
     id = $1`, [id])
     if (checkId.rowCount === 0) return res.sendStatus(404)
-    const {error} = urlSchema.validate({url: checkId.rows[0].url})
-    if(error) return res.sendStatus(404)
     res.locals.id = checkId.rows[0].id
     res.locals.shortUrl = checkId.rows[0].shortUrl
     res.locals.url = checkId.rows[0].url

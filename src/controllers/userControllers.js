@@ -47,8 +47,20 @@ const urlShorten = async(req, res) => {
   }
 }
 
+const deleteById = async(req, res) => {
+  try {
+    const {urlId} = res.locals
+    await db.query(`DELETE FROM urls WHERE id = $1`, [urlId])
+    return res.sendStatus(204)
+    
+  } catch (error) {
+    return res.send(error).status(500)
+  }
+}
+
 export {
   signUp,
   signIn,
-  urlShorten
+  urlShorten,
+  deleteById
 }
