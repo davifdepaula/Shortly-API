@@ -13,6 +13,20 @@ const validateUrlId = async(req, res, next) => {
   }
 }
 
+const validateShortUrlenUrlId = async(req, res, next) => {
+  try {
+    const {shortUrl} =  req.params
+    const checkId = await db.query(`SELECT * FROM urls WHERE
+    "shortUrl" = $1`, [shortUrl])
+    if (checkId.rowCount === 0) return res.sendStatus(404)
+    res.locals.shortUrl = shortUrl
+    next()
+  } catch (error) {
+    return res.status(500).send(error)
+  }
+}
+
 export {
-  validateUrlId
+  validateUrlId,
+  validateShortUrlenUrlId
 }
