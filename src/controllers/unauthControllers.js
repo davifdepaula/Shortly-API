@@ -28,8 +28,7 @@ const getShortUrl = async(req, res) => {
 
 const getRanking = async(req, res) => {
   try {
-    const ranking = await db.query(`SELECT users.id, users.name, 
-    count(urls) as "linksCount", sum(urls."visitCount") as "visitCount"
+    const ranking = await db.query(`SELECT users.name, sum(urls."visitCount") as "visitCount"
     FROM users JOIN urls on users.id = urls."userId"  
     group by users.id order by "visitCount" limit 10;`)
     return res.send(ranking.rows)
