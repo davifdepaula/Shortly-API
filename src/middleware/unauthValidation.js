@@ -1,5 +1,4 @@
 import db from "../config/connection.js"
-import { urlSchema } from "../model/authUserModel.js"
 
 const validateUrlId = async(req, res, next) => {
   try {
@@ -7,8 +6,6 @@ const validateUrlId = async(req, res, next) => {
     const checkId = await db.query(`SELECT * FROM urls WHERE
     id = $1`, [id])
     if (checkId.rowCount === 0) return res.sendStatus(404)
-    const url = urlSchema.validate(checkId.rows[0].url)
-    if(url.error) return res.status(422).send(`${url.error.message}`)
     res.locals.id = checkId.rows[0].id
     res.locals.url = checkId.rows[0].url
     res.locals.shortUrl = checkId.rows[0].shortUrl

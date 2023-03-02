@@ -18,7 +18,7 @@ const signInValidate = async(req, res, next) => {
   const signInValidation = signInSchema.validate(req.body)
   if(signInValidation.error) return res.status(422).send(`${signInValidation.error.message}`)
   const checkUser = await db.query(`SELECT * FROM users 
-    where email = '${req.body.email}'`)
+    where email = $1`, [req.body.email])
   if(checkUser.rowCount === 0) return res.sendStatus(401)
   if(!checkUser || !bcrypt.compareSync(req.body.password, checkUser.rows[0].password)){
     return res.status(401).send("Usuário ou senha inválidos")
